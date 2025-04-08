@@ -1,6 +1,7 @@
 'use client'
 
-import { useState, ReactNode } from 'react'
+import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -15,24 +16,16 @@ import {
 } from '@/components/ui/form'
 import { Button } from '@/components/ui/button'
 import { Input, PasswordInput } from '@/components/ui/input'
+import { useLocalStorage } from '@/hooks/use-localstorage'
 
 const loginFormSchema = z.object({
-  email: z.string().min(2, {
-    message: 'Vui lòng nhập email.',
-  }),
-  password: z.string().min(2, {
-    message: 'Vui lòng nhập mật khẩu.',
-  }),
+  email: z.string().email({ message: 'Invalid email address' }),
+  password: z.string().min(6, { message: 'Password must be at least 8 characters long' }),
 })
 
-type LoginFormProps = {
-  Logo: ReactNode
-  Header?: ReactNode
-  Footer?: ReactNode
-  showForgotPassword?: boolean
-}
+export function Login() {
+  const router = useRouter()
 
-export function Login({ Logo, Footer, Header }: LoginFormProps) {
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const form = useForm<z.infer<typeof loginFormSchema>>({
     resolver: zodResolver(loginFormSchema),
@@ -41,10 +34,14 @@ export function Login({ Logo, Footer, Header }: LoginFormProps) {
       password: '',
     },
   })
+  const [_, setEmail] = useLocalStorage('email', '')
 
   const onSubmit = async (values: z.infer<typeof loginFormSchema>) => {
     try {
       setIsLoading(true)
+
+      setEmail(values.email)
+      router.push('/')
     } catch (e) {
       console.error(e)
     } finally {
@@ -54,13 +51,11 @@ export function Login({ Logo, Footer, Header }: LoginFormProps) {
 
   return (
     <div className="flex flex-col justify-center items-center pt-24 min-h-dvh w-full">
-      {Header ? Header : null}
+      <main className="w-[300px] flex-1 gap-12 flex flex-col">
+        <h1 className="text-3xl font-[family-name:var(--font-geist-mono)] font-semibold">Login</h1>
 
-      <main className="w-[300px] flex-1">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4">
-            {Logo}
-
             <FormField
               control={form.control}
               name="email"
@@ -95,8 +90,6 @@ export function Login({ Logo, Footer, Header }: LoginFormProps) {
           </form>
         </Form>
       </main>
-
-      {Footer ? Footer : null}
     </div>
   )
 }

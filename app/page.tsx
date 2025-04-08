@@ -1,3 +1,5 @@
+import PrivateRoute from '@/components/private-route'
+
 export default function Home() {
-  return <div className="">Dashboard</div>
+  return <PrivateRoute>Dashboard</PrivateRoute>
 }
