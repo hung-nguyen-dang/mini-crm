@@ -39,7 +39,9 @@ function NavigationBar() {
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter>
-        <Button onClick={() => setEmail('')}>Logout</Button>
+        <Button onClick={() => setEmail('')} variant="destructive">
+          Logout
+        </Button>
       </SidebarFooter>
     </Sidebar>
   )

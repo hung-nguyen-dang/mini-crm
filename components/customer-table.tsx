@@ -64,9 +64,7 @@ function CustomerTable() {
                     <TableCell>
                       <DropdownMenu>
                         <DropdownMenuTrigger>
-                          <Button variant="ghost">
-                            <EllipsisIcon />
-                          </Button>
+                          <EllipsisIcon className="cursor-pointer transition-all hover:bg-accent" />
                         </DropdownMenuTrigger>
                         <DropdownMenuContent>
                           <Link href={`/customers/${customer.id}`}>
