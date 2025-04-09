@@ -16,7 +16,7 @@ import {
 } from '@/components/ui/form'
 import { Button } from '@/components/ui/button'
 import { Input, PasswordInput } from '@/components/ui/input'
-import { useLocalStorage } from '@/hooks/use-localstorage'
+import { useAuthenticate } from '@/hooks/use-authenticate'
 
 const loginFormSchema = z.object({
   email: z.string().email({ message: 'Invalid email address' }),
@@ -34,7 +34,7 @@ export function Login() {
       password: '',
     },
   })
-  const [_, setEmail] = useLocalStorage('email', '')
+  const { setEmail } = useAuthenticate()
 
   const onSubmit = async (values: z.infer<typeof loginFormSchema>) => {
     try {

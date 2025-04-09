@@ -11,8 +11,12 @@ import {
   SidebarMenuButton,
   SidebarHeader,
 } from '@/components/ui/sidebar'
+import { Button } from '@/components/ui/button'
+import { useAuthenticate } from '@/hooks/use-authenticate'
 
 function NavigationBar() {
+  const { setEmail } = useAuthenticate()
+
   return (
     <Sidebar>
       <SidebarHeader className="p-4 font-[family-name:var(--font-geist-mono)] font-semibold">
@@ -34,7 +38,9 @@ function NavigationBar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-      <SidebarFooter />
+      <SidebarFooter>
+        <Button onClick={() => setEmail('')}>Logout</Button>
+      </SidebarFooter>
     </Sidebar>
   )
 }
