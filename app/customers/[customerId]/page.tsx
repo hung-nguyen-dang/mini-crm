@@ -1,7 +1,7 @@
 import { HydrationBoundary, dehydrate } from '@tanstack/react-query'
 
 import PrivateRoute from '@/components/private-route'
-import CustomerDetails from '@/app/customers/[customerId]/CustomerDetails'
+import CustomerDetails from '@/app/customers/[customerId]/customer-details'
 import { getQueryClient } from '@/lib/react-query'
 import { fetchCustomerById } from '@/lib/supabase/client'
 

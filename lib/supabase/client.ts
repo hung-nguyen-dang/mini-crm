@@ -17,3 +17,10 @@ export async function fetchCustomerById(id: string) {
   const { data } = await supabase.from('customers').select('*').eq('id', id)
   return data as Array<Customer>
 }
+
+export type UpdateCustomerInput = Omit<Customer, 'created_at'>
+
+export async function updateCustomerById(customer: UpdateCustomerInput) {
+  const { data } = await supabase.from('customers').update(customer).eq('id', customer.id).select()
+  return data
+}

@@ -1,10 +1,12 @@
 'use client'
 
 import { useParams } from 'next/navigation'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useMutation } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
+import { format } from 'date-fns'
+
 import { zodResolver } from '@hookform/resolvers/zod'
-import { fetchCustomerById } from '@/lib/supabase/client'
+import { fetchCustomerById, updateCustomerById, UpdateCustomerInput } from '@/lib/supabase/client'
 import { Input } from '@/components/ui/input'
 import { Checkbox } from '@/components/ui/checkbox'
 import {
@@ -18,6 +20,7 @@ import {
 import { Button } from '@/components/ui/button'
 import DatePickerField from '@/components/date-picker'
 import { z } from 'zod'
+import { getQueryClient } from '@/lib/react-query'
 
 const customerSchema = z.object({
   name: z.string().min(2, {
@@ -29,11 +32,20 @@ const customerSchema = z.object({
 })
 
 export default function CustomerDetails() {
+  const queryClient = getQueryClient()
   const { customerId } = useParams<{ customerId: string }>()
+  const queryKey = ['customerDetails', customerId]
 
   const { data } = useQuery({
-    queryKey: ['customerDetails', customerId],
+    queryKey,
     queryFn: () => fetchCustomerById(customerId),
+  })
+
+  const { mutate: updateCustomer, isPending } = useMutation({
+    mutationFn: (customer: UpdateCustomerInput) => updateCustomerById(customer),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey })
+    },
   })
 
   if (!data) {
@@ -52,8 +64,11 @@ export default function CustomerDetails() {
 
   const onSubmit = async (values: z.infer<typeof customerSchema>) => {
     try {
-      console.log(values)
-      // Call your update function here
+      updateCustomer({
+        ...values,
+        id: data[0].id,
+        last_contacted: format(values.last_contacted, 'yyyy-MM-dd'),
+      })
     } catch (e) {
       console.error(e)
     }
@@ -128,7 +143,9 @@ export default function CustomerDetails() {
             control={form.control}
           />
 
-          <Button>Save</Button>
+          <Button loading={isPending} disabled={isPending}>
+            Save
+          </Button>
         </form>
       </Form>
     </div>
