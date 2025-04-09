@@ -56,4 +56,30 @@ const PasswordInput = React.forwardRef<HTMLInputElement, PasswordInputProps>(
   },
 )
 
-export { Input, PasswordInput }
+interface DebouncedInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  onFilter: (value: string) => void
+  delay?: number
+}
+
+function DebouncedInput({ onFilter, delay = 300, ...rest }: DebouncedInputProps) {
+  const [inputValue, setInputValue] = React.useState('')
+  const [debouncedValue, setDebouncedValue] = React.useState('')
+
+  React.useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedValue(inputValue)
+    }, delay)
+
+    return () => {
+      clearTimeout(handler)
+    }
+  }, [inputValue, delay])
+
+  React.useEffect(() => {
+    onFilter(debouncedValue)
+  }, [debouncedValue, onFilter])
+
+  return <Input value={inputValue} onChange={(e) => setInputValue(e.target.value)} {...rest} />
+}
+
+export { Input, PasswordInput, DebouncedInput }
