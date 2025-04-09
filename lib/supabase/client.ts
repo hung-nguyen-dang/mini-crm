@@ -10,5 +10,10 @@ export async function fetchCustomers(filter: string) {
     .from('customers')
     .select('*')
     .or(`name.ilike.%${filter}%, email.ilike.%${filter}%`)
-  return data
+  return data as Array<Customer>
+}
+
+export async function fetchCustomerById(id: string) {
+  const { data } = await supabase.from('customers').select('*').eq('id', id)
+  return data as Array<Customer>
 }
