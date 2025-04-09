@@ -5,9 +5,9 @@ export const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
 )
 
-export async function fetchUsers(filter: string) {
+export async function fetchCustomers(filter: string) {
   const { data } = await supabase
-    .from('users')
+    .from('customers')
     .select('*')
     .or(`name.ilike.%${filter}%, email.ilike.%${filter}%`)
   return data

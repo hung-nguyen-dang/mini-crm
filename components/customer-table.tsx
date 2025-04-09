@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { PlusIcon } from 'lucide-react'
 import { useQuery } from '@tanstack/react-query'
-import { fetchUsers } from '@/lib/supabase/client'
+import { fetchCustomers } from '@/lib/supabase/client'
 import {
   Table,
   TableBody,
@@ -17,12 +17,12 @@ import { DebouncedInput } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { dateTimeFormat } from '@/lib/utils'
 
-function UserTable() {
+function CustomerTable() {
   const [filter, setFilter] = useState<string>('')
 
-  const { data: users, isLoading } = useQuery({
-    queryKey: ['users', filter],
-    queryFn: () => fetchUsers(filter),
+  const { data: customers, isLoading } = useQuery({
+    queryKey: ['customers', filter],
+    queryFn: () => fetchCustomers(filter),
   })
 
   return (
@@ -30,7 +30,7 @@ function UserTable() {
       <div className="flex gap-4">
         <DebouncedInput onFilter={setFilter} delay={500} placeholder="filter by name / email" />
 
-        <Button startDecorator={<PlusIcon />}>Add user</Button>
+        <Button startDecorator={<PlusIcon />}>Add customer</Button>
       </div>
 
       {isLoading ? (
@@ -46,20 +46,20 @@ function UserTable() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {users?.length
-              ? users.map((user) => (
-                  <TableRow key={user.id}>
-                    <TableCell className="font-medium">{user.name}</TableCell>
-                    <TableCell>{user.email}</TableCell>
-                    <TableCell>{user.active ? 'Active' : 'Inactive'}</TableCell>
-                    <TableCell>{dateTimeFormat(new Date(user.last_contacted))}</TableCell>
+            {customers?.length
+              ? customers.map((customer) => (
+                  <TableRow key={customer.id}>
+                    <TableCell className="font-medium">{customer.name}</TableCell>
+                    <TableCell>{customer.email}</TableCell>
+                    <TableCell>{customer.active ? 'Active' : 'Inactive'}</TableCell>
+                    <TableCell>{dateTimeFormat(new Date(customer.last_contacted))}</TableCell>
                   </TableRow>
                 ))
               : null}
           </TableBody>
           <TableFooter>
             <TableRow>
-              <TableCell colSpan={4}>Total: {users?.length}</TableCell>
+              <TableCell colSpan={4}>Total: {customers?.length}</TableCell>
             </TableRow>
           </TableFooter>
         </Table>
@@ -68,4 +68,4 @@ function UserTable() {
   )
 }
 
-export default UserTable
+export default CustomerTable

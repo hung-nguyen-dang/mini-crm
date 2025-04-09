@@ -16,10 +16,10 @@ function PrivateRoute({ children }: { children: ReactNode }) {
   return (
     <>
       <NavigationBar />
-      <main className="w-full h-dvh min-w-0 overflow-auto p-4">
+      <div className="w-full h-dvh min-w-0 overflow-auto p-4">
         <SidebarTrigger />
         {children}
-      </main>
+      </div>
     </>
   )
 }

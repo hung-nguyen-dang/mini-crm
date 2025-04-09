@@ -1,10 +1,10 @@
 import PrivateRoute from '@/components/private-route'
-import UserTable from '@/components/user-table'
+import CustomerTable from '@/components/customer-table'
 
 export default async function Dashboard() {
   return (
     <PrivateRoute>
-      <UserTable />
+      <CustomerTable />
     </PrivateRoute>
   )
 }
