@@ -111,7 +111,6 @@ export default function CustomerDetails() {
 
   return (
     <div className="max-w-[352px] flex flex-col gap-8">
-      <h1>Customer Details</h1>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4">
           <FormField

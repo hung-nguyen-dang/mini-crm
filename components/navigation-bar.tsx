@@ -10,6 +10,7 @@ import {
   SidebarGroupContent,
   SidebarMenuButton,
   SidebarHeader,
+  SidebarSeparator,
 } from '@/components/ui/sidebar'
 import { Button } from '@/components/ui/button'
 import { useAuthenticate } from '@/hooks/use-authenticate'
@@ -24,6 +25,7 @@ function NavigationBar() {
       </SidebarHeader>
 
       <SidebarContent>
+        <SidebarSeparator />
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>
