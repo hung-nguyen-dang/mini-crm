@@ -24,3 +24,10 @@ export async function updateCustomerById(customer: UpdateCustomerInput) {
   const { data } = await supabase.from('customers').update(customer).eq('id', customer.id).select()
   return data
 }
+
+export type AddCustomerInput = Omit<Customer, 'created_at' | 'id'>
+
+export async function addCustomers(customers: Array<AddCustomerInput>) {
+  const { data } = await supabase.from('customers').insert(customers).select()
+  return data
+}

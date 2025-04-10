@@ -1,12 +1,19 @@
 'use client'
 
+import { useEffect } from 'react'
 import { useParams } from 'next/navigation'
 import { useQuery, useMutation } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
 import { format } from 'date-fns'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { fetchCustomerById, updateCustomerById, UpdateCustomerInput } from '@/lib/supabase/client'
+import {
+  fetchCustomerById,
+  updateCustomerById,
+  UpdateCustomerInput,
+  addCustomers,
+  AddCustomerInput,
+} from '@/lib/supabase/client'
 import { Input } from '@/components/ui/input'
 import { Checkbox } from '@/components/ui/checkbox'
 import {
@@ -39,10 +46,18 @@ export default function CustomerDetails() {
   const { data } = useQuery({
     queryKey,
     queryFn: () => fetchCustomerById(customerId),
-  }) as { data: Array<Customer> }
+    enabled: !!customerId,
+  })
 
-  const { mutate: updateCustomer, isPending } = useMutation({
+  const { mutate: updateCustomer, isPending: isUpdatingCustomer } = useMutation({
     mutationFn: (customer: UpdateCustomerInput) => updateCustomerById(customer),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey })
+    },
+  })
+
+  const { mutate: addCustomer, isPending: isAddingCustomer } = useMutation({
+    mutationFn: (customer: AddCustomerInput) => addCustomers([customer]),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey })
     },
@@ -51,24 +66,48 @@ export default function CustomerDetails() {
   const form = useForm<z.infer<typeof customerSchema>>({
     resolver: zodResolver(customerSchema),
     defaultValues: {
-      name: data[0].name || '',
-      email: data[0].email || '',
-      active: data[0].active || false,
-      last_contacted: new Date(data[0].last_contacted) || undefined,
+      name: '',
+      email: '',
+      active: false,
+      last_contacted: new Date(),
     },
   })
 
   const onSubmit = async (values: z.infer<typeof customerSchema>) => {
     try {
-      updateCustomer({
-        ...values,
-        id: data[0].id,
-        last_contacted: format(values.last_contacted, 'yyyy-MM-dd'),
-      })
+      if (!!customerId && data) {
+        /**
+         * Edit mode
+         */
+        updateCustomer({
+          ...values,
+          id: data[0].id,
+          last_contacted: format(values.last_contacted, 'yyyy-MM-dd'),
+        })
+      } else {
+        /**
+         * Add mode
+         */
+        addCustomer({
+          ...values,
+          last_contacted: format(values.last_contacted, 'yyyy-MM-dd'),
+        })
+      }
     } catch (e) {
       console.error(e)
     }
   }
+
+  useEffect(() => {
+    if (data && data.length) {
+      form.reset({
+        name: data[0].name,
+        email: data[0].email,
+        active: data[0].active,
+        last_contacted: new Date(data[0].last_contacted),
+      })
+    }
+  }, [data, form])
 
   return (
     <div className="max-w-[352px] flex flex-col gap-8">
@@ -139,7 +178,10 @@ export default function CustomerDetails() {
             control={form.control}
           />
 
-          <Button loading={isPending} disabled={isPending}>
+          <Button
+            loading={isUpdatingCustomer || isAddingCustomer}
+            disabled={!form.formState.isDirty || isUpdatingCustomer || isAddingCustomer}
+          >
             Save
           </Button>
         </form>

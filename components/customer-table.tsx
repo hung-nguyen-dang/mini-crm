@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { PlusIcon, EllipsisIcon, RefreshCwIcon } from 'lucide-react'
+import { PlusIcon, EllipsisIcon, RefreshCwIcon, Loader2 } from 'lucide-react'
 import Link from 'next/link'
 import { useQuery } from '@tanstack/react-query'
 import { fetchCustomers } from '@/lib/supabase/client'
@@ -42,11 +42,13 @@ function CustomerTable() {
       <div className="flex gap-4">
         <DebouncedInput onFilter={setFilter} delay={500} placeholder="filter by name / email" />
 
-        <Button startDecorator={<PlusIcon />}>Add customer</Button>
+        <Link href="/customers/new">
+          <Button startDecorator={<PlusIcon />}>Add customer</Button>
+        </Link>
       </div>
 
       {isLoading ? (
-        <p>is loading</p>
+        <Loader2 className="animate-spin" />
       ) : (
         <Table hidden={isLoading}>
           <TableHeader>
@@ -76,8 +78,10 @@ function CustomerTable() {
                     <TableCell>{dateTimeFormat(new Date(customer.last_contacted))}</TableCell>
                     <TableCell>
                       <DropdownMenu>
-                        <DropdownMenuTrigger>
-                          <EllipsisIcon className="cursor-pointer transition-all hover:bg-accent" />
+                        <DropdownMenuTrigger asChild>
+                          <Button variant="ghost">
+                            <EllipsisIcon className="cursor-pointer transition-all hover:bg-accent" />
+                          </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent>
                           <Link href={`/customers/${customer.id}`}>
