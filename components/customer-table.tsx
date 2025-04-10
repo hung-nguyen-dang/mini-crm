@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { PlusIcon, EllipsisIcon } from 'lucide-react'
+import { PlusIcon, EllipsisIcon, RefreshCwIcon } from 'lucide-react'
 import Link from 'next/link'
 import { useQuery } from '@tanstack/react-query'
 import { fetchCustomers } from '@/lib/supabase/client'
@@ -22,12 +22,17 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from '@/components/ui/dropdown-menu'
-import { dateTimeFormat } from '@/lib/utils'
+import { cn, dateTimeFormat } from '@/lib/utils'
 
 function CustomerTable() {
   const [filter, setFilter] = useState<string>('')
 
-  const { data: customers, isLoading } = useQuery({
+  const {
+    data: customers,
+    isLoading,
+    refetch,
+    isFetching,
+  } = useQuery({
     queryKey: ['customers', filter],
     queryFn: () => fetchCustomers(filter),
   })
@@ -50,7 +55,15 @@ function CustomerTable() {
               <TableHead>Email</TableHead>
               <TableHead>Status</TableHead>
               <TableHead>Last Contacted</TableHead>
-              <TableHead />
+              <TableHead>
+                <Button variant="ghost" onClick={() => refetch()}>
+                  <RefreshCwIcon
+                    className={cn({
+                      'animate-spin': isFetching,
+                    })}
+                  />
+                </Button>
+              </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
