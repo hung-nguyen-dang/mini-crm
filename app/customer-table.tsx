@@ -1,8 +1,16 @@
 'use client'
 
-import { useState } from 'react'
-import { PlusIcon, EllipsisIcon, RefreshCwIcon, Loader2 } from 'lucide-react'
+import { useState, useEffect } from 'react'
+import {
+  PlusIcon,
+  EllipsisIcon,
+  RefreshCwIcon,
+  Loader2,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+} from 'lucide-react'
 import Link from 'next/link'
+import { format } from 'date-fns'
 import { useQuery } from '@tanstack/react-query'
 import { fetchCustomers } from '@/lib/supabase/client'
 import {
@@ -22,20 +30,28 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from '@/components/ui/dropdown-menu'
-import { cn, dateTimeFormat } from '@/lib/utils'
+import { cn } from '@/lib/utils'
 
-function CustomerTable() {
+const PAGE_SIZE = 5
+
+export default function CustomerTable() {
   const [filter, setFilter] = useState<string>('')
+  const [totalPages, setTotalPages] = useState(1)
+  const [page, setPage] = useState(1)
 
   const {
-    data: customers,
+    data: { customers, total } = { customers: [], total: 0 },
     isLoading,
     refetch,
     isFetching,
   } = useQuery({
-    queryKey: ['customers', filter],
-    queryFn: () => fetchCustomers(filter),
+    queryKey: ['customers', filter, page],
+    queryFn: () => fetchCustomers(filter, { page, pageSize: PAGE_SIZE }),
   })
+
+  useEffect(() => {
+    setTotalPages(Math.ceil((total || 0) / PAGE_SIZE))
+  }, [total])
 
   return (
     <div className="flex flex-col gap-4">
@@ -75,7 +91,9 @@ function CustomerTable() {
                     <TableCell className="font-medium">{customer.name}</TableCell>
                     <TableCell>{customer.email}</TableCell>
                     <TableCell>{customer.active ? 'Active' : 'Inactive'}</TableCell>
-                    <TableCell>{dateTimeFormat(new Date(customer.last_contacted))}</TableCell>
+                    <TableCell>
+                      {format(new Date(customer.last_contacted), 'MMMM do, yyyy')}
+                    </TableCell>
                     <TableCell>
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
@@ -96,7 +114,27 @@ function CustomerTable() {
           </TableBody>
           <TableFooter>
             <TableRow>
-              <TableCell colSpan={5}>Total: {customers?.length}</TableCell>
+              <TableCell colSpan={5}>
+                <div className="flex gap-4 items-center">
+                  <Button
+                    variant="outline"
+                    onClick={() => setPage((prev) => prev - 1)}
+                    disabled={page <= 1}
+                  >
+                    <ChevronLeftIcon />
+                  </Button>
+                  <span>
+                    Page {page} of {totalPages}
+                  </span>
+                  <Button
+                    variant="outline"
+                    onClick={() => setPage((prev) => prev + 1)}
+                    disabled={page >= totalPages}
+                  >
+                    <ChevronRightIcon />
+                  </Button>
+                </div>
+              </TableCell>
             </TableRow>
           </TableFooter>
         </Table>
@@ -104,5 +142,3 @@ function CustomerTable() {
     </div>
   )
 }
-
-export default CustomerTable

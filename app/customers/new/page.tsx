@@ -1,4 +1,4 @@
-import CustomerDetails from '@/app/customers/[customerId]/customer-details'
+import CustomerDetails from '@/app/customers/customer-details'
 import PrivateRoute from '@/components/private-route'
 
 export default function Page() {

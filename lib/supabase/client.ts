@@ -5,12 +5,23 @@ export const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
 )
 
-export async function fetchCustomers(filter: string) {
-  const { data } = await supabase
+export async function fetchCustomers(
+  filter: string,
+  { page, pageSize }: { page: number; pageSize: number },
+) {
+  const from = (page - 1) * pageSize
+  const to = from + pageSize - 1
+
+  const { data, count } = await supabase
     .from('customers')
-    .select('*')
+    .select('*', { count: 'exact' })
     .or(`name.ilike.%${filter}%, email.ilike.%${filter}%`)
-  return data as Array<Customer>
+    .range(from, to)
+
+  return { customers: data, total: count } as {
+    customers: Array<Customer>
+    total: number
+  }
 }
 
 export async function fetchCustomerById(id: string) {
