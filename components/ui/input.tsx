@@ -21,7 +21,7 @@ function Input({ className, type, ...props }: React.ComponentProps<'input'>) {
   )
 }
 
-interface PasswordInputProps extends React.InputHTMLAttributes<HTMLInputElement> {}
+type PasswordInputProps = React.InputHTMLAttributes<HTMLInputElement>
 
 const PasswordInput = React.forwardRef<HTMLInputElement, PasswordInputProps>(
   ({ className, ...props }, ref) => {

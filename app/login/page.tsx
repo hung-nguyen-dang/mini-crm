@@ -23,7 +23,7 @@ const loginFormSchema = z.object({
   password: z.string().min(6, { message: 'Password must be at least 8 characters long' }),
 })
 
-export function Login() {
+export default function Page() {
   const router = useRouter()
 
   const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -93,5 +93,3 @@ export function Login() {
     </div>
   )
 }
-
-export default Login

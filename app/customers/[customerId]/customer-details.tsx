@@ -39,7 +39,7 @@ export default function CustomerDetails() {
   const { data } = useQuery({
     queryKey,
     queryFn: () => fetchCustomerById(customerId),
-  })
+  }) as { data: Array<Customer> }
 
   const { mutate: updateCustomer, isPending } = useMutation({
     mutationFn: (customer: UpdateCustomerInput) => updateCustomerById(customer),
@@ -47,10 +47,6 @@ export default function CustomerDetails() {
       queryClient.invalidateQueries({ queryKey })
     },
   })
-
-  if (!data) {
-    return 'Not Found'
-  }
 
   const form = useForm<z.infer<typeof customerSchema>>({
     resolver: zodResolver(customerSchema),

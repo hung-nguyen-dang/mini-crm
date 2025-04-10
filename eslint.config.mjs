@@ -16,7 +16,7 @@ const eslintConfig = [
   {
     rules: {
       'react/display-name': 'off',
-      semi: 'never',
+      semi: 'off',
     },
   },
 ]
