@@ -30,6 +30,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from '@/components/ui/dropdown-menu'
+import { Badge } from '@/components/ui/badge'
 import { cn } from '@/lib/utils'
 
 const PAGE_SIZE = 5
@@ -56,7 +57,7 @@ export default function CustomerTable() {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex gap-4">
-        <DebouncedInput onFilter={setFilter} delay={500} placeholder="filter by name / email" />
+        <DebouncedInput onFilter={setFilter} delay={500} placeholder="filter by Name / Email" />
 
         <Link href="/customers/new">
           <Button startDecorator={<PlusIcon />}>Add customer</Button>
@@ -90,7 +91,13 @@ export default function CustomerTable() {
                   <TableRow key={customer.id} className="cursor-pointer">
                     <TableCell className="font-medium">{customer.name}</TableCell>
                     <TableCell>{customer.email}</TableCell>
-                    <TableCell>{customer.active ? 'Active' : 'Inactive'}</TableCell>
+                    <TableCell>
+                      {customer.active ? (
+                        <Badge>Active</Badge>
+                      ) : (
+                        <Badge variant="secondary">Inactive</Badge>
+                      )}
+                    </TableCell>
                     <TableCell>
                       {format(new Date(customer.last_contacted), 'MMMM do, yyyy')}
                     </TableCell>
