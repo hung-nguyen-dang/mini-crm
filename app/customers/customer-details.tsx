@@ -31,7 +31,7 @@ import { getQueryClient } from '@/lib/react-query'
 
 const customerSchema = z.object({
   name: z.string().min(2, {
-    message: 'Please enter a name.',
+    message: 'Please enter a name',
   }),
   email: z.string().email({ message: 'Invalid email address' }),
   active: z.boolean(),
@@ -115,11 +115,12 @@ export default function CustomerDetails() {
         <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4">
           <FormField
             render={({ field }) => (
-              <FormItem className="flex gap-4">
+              <FormItem className="grid grid-cols-[1fr_2fr] grid-rows-[2fr_1fr] gap-2">
                 <FormLabel>Name</FormLabel>
                 <FormControl>
                   <Input {...field} />
                 </FormControl>
+                <div />
                 <FormMessage />
               </FormItem>
             )}
@@ -129,11 +130,12 @@ export default function CustomerDetails() {
 
           <FormField
             render={({ field }) => (
-              <FormItem className="flex gap-4">
+              <FormItem className="grid grid-cols-[1fr_2fr] grid-rows-[2fr_1fr] gap-2">
                 <FormLabel>Email</FormLabel>
                 <FormControl>
                   <Input {...field} />
                 </FormControl>
+                <div />
                 <FormMessage />
               </FormItem>
             )}
@@ -143,7 +145,7 @@ export default function CustomerDetails() {
 
           <FormField
             render={({ field }) => (
-              <FormItem className="flex gap-4">
+              <FormItem className="grid grid-cols-[1fr_2fr] grid-rows-[2fr_1fr] gap-2">
                 <FormLabel>Last contacted</FormLabel>
                 <FormControl>
                   <DatePickerField
@@ -161,7 +163,7 @@ export default function CustomerDetails() {
 
           <FormField
             render={({ field }) => (
-              <FormItem className="flex gap-4">
+              <FormItem className="grid grid-cols-[1fr_2fr] grid-rows-[2fr_1fr] gap-2">
                 <FormLabel>Active</FormLabel>
                 <FormControl>
                   <Checkbox
@@ -170,6 +172,7 @@ export default function CustomerDetails() {
                     onCheckedChange={field.onChange}
                   />
                 </FormControl>
+                <div />
                 <FormMessage />
               </FormItem>
             )}
