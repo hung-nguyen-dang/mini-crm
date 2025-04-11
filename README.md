@@ -1,3 +1,5 @@
+## Preview URL: [mini-crm.hungdangnguyen.com](https://mini-crm.hungdangnguyen.com/)
+
 ## Development server
 ```bash
 npm run dev
