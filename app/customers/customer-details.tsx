@@ -5,6 +5,7 @@ import { useParams } from 'next/navigation'
 import { useQuery, useMutation } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
 import { format } from 'date-fns'
+import { toast } from 'sonner'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
@@ -52,6 +53,7 @@ export default function CustomerDetails() {
   const { mutate: updateCustomer, isPending: isUpdatingCustomer } = useMutation({
     mutationFn: (customer: UpdateCustomerInput) => updateCustomerById(customer),
     onSuccess: () => {
+      toast.success('Edited customer successfully')
       queryClient.invalidateQueries({ queryKey }).then(() => {
         if (data && data.length) {
           form.reset({
@@ -68,6 +70,7 @@ export default function CustomerDetails() {
   const { mutate: addCustomer, isPending: isAddingCustomer } = useMutation({
     mutationFn: (customer: AddCustomerInput) => addCustomers([customer]),
     onSuccess: () => {
+      toast.success('Added customer successfully')
       queryClient.invalidateQueries({ queryKey }).then(() => {
         form.reset({ name: '', email: '', active: false, last_contacted: new Date() })
       })
