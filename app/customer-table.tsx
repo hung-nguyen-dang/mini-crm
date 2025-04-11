@@ -42,6 +42,7 @@ export default function CustomerTable() {
   } = useQuery({
     queryKey: ['customers', filter, page],
     queryFn: () => fetchCustomers(filter, { page, pageSize: PAGE_SIZE }),
+    refetchOnMount: 'always',
   })
 
   useEffect(() => {
@@ -96,11 +97,11 @@ export default function CustomerTable() {
                       {format(new Date(customer.last_contacted), 'MMMM do, yyyy')}
                     </TableCell>
                     <TableCell>
-                      <Button variant="ghost" className="cursor-pointer">
-                        <Link href={`/customers/${customer.id}`}>
+                      <Link href={`/customers/${customer.id}`}>
+                        <Button variant="ghost" className="cursor-pointer">
                           <EditIcon>Edit</EditIcon>
-                        </Link>
-                      </Button>
+                        </Button>
+                      </Link>
                     </TableCell>
                   </TableRow>
                 ))

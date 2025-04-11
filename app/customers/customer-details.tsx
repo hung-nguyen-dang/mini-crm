@@ -52,14 +52,25 @@ export default function CustomerDetails() {
   const { mutate: updateCustomer, isPending: isUpdatingCustomer } = useMutation({
     mutationFn: (customer: UpdateCustomerInput) => updateCustomerById(customer),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey })
+      queryClient.invalidateQueries({ queryKey }).then(() => {
+        if (data && data.length) {
+          form.reset({
+            name: data[0].name,
+            email: data[0].email,
+            active: data[0].active,
+            last_contacted: new Date(data[0].last_contacted),
+          })
+        }
+      })
     },
   })
 
   const { mutate: addCustomer, isPending: isAddingCustomer } = useMutation({
     mutationFn: (customer: AddCustomerInput) => addCustomers([customer]),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey })
+      queryClient.invalidateQueries({ queryKey }).then(() => {
+        form.reset({ name: '', email: '', active: false, last_contacted: new Date() })
+      })
     },
   })
 
