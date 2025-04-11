@@ -1,36 +1,64 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
-
-## Getting Started
-
-First, run the development server:
-
+## Development server
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Build and Serve
+```bash
+npm run build
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+# then
 
-## Learn More
+npm run start
+```
 
-To learn more about Next.js, take a look at the following resources:
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Requirements
+### 1. Authentication (Basic)
+- [x] Implement a login page (email/password)
+- [x] No real authentication required (store login state in localStorage or context)
+- [x] Redirect to dashboard on successful login
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+![login.png](public/login.png)
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 2. Dashboard page
+- [x] Show a list of customers with: Name, Email, Status (Active/Inactive), Last Contacted
+- [x] Include a search bar to filter customers
+- [x] Provide a button to add a new customer
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+![dashboard.png](public/dashboard.png)
+
+---
+
+### 3. Customer details page (/customers/[id])
+- [x] Display full details of a selected customer
+- [x] Allow editing customer info
+
+![customer-details.png](public/customer-details.png)
+
+---
+
+### 4. API Integration (Real)
+- [x] Create an API route (/api/customers) to return real customer data
+- [x] Fetch data in the dashboard using React Query
+
+---
+
+### 5. Tech Stack
+- [x] Next.js (latest version)
+- [x] TypeScript
+- [x] Tailwind CSS for styling
+- [x] React Query (or SWR) for API fetching
+- [x] Zod for form validation
+
+---
+
+### 6. Bonus
+- [x] Implement pagination for customers
+- [x] Allow adding new customers via a form
+- [x] Connect to a PostgreSQL database (Supabase)

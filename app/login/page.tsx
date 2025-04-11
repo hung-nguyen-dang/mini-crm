@@ -20,7 +20,7 @@ import { useAuthenticate } from '@/hooks/use-authenticate'
 
 const loginFormSchema = z.object({
   email: z.string().email({ message: 'Invalid email address' }),
-  password: z.string().min(6, { message: 'Password must be at least 8 characters long' }),
+  password: z.string().min(6, { message: 'Password must be at least 6 characters long' }),
 })
 
 export default function Page() {
@@ -52,7 +52,7 @@ export default function Page() {
   return (
     <div className="flex flex-col justify-center items-center pt-24 min-h-dvh w-full">
       <main className="w-[300px] flex-1 gap-12 flex flex-col">
-        <h1 className="text-3xl font-[family-name:var(--font-geist-mono)] font-semibold">Login</h1>
+        <h1 className="text-3xl font-[family-name:var(--font-geist-mono)] font-semibold">Mini CRM</h1>
 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4">
@@ -75,7 +75,7 @@ export default function Page() {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Mật khẩu</FormLabel>
+                  <FormLabel>Password</FormLabel>
                   <FormControl>
                     <PasswordInput {...field} />
                   </FormControl>
@@ -85,7 +85,7 @@ export default function Page() {
             />
 
             <Button type="submit" loading={isLoading} disabled={isLoading}>
-              Đăng nhập
+              Login
             </Button>
           </form>
         </Form>

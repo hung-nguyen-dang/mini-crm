@@ -1,8 +1,8 @@
 import { createClient } from '@supabase/supabase-js'
 
 export const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+  'https://ioirtjdjyonsytpaurvn.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlvaXJ0amRqeW9uc3l0cGF1cnZuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQxODMyODcsImV4cCI6MjA1OTc1OTI4N30.IEz-0CpsYfHvYBGOdqbSNgEk31yeu8YxnGkp0zp2jSc',
 )
 
 export async function fetchCustomers(

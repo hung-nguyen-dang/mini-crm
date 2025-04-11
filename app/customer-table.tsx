@@ -3,11 +3,11 @@
 import { useState, useEffect } from 'react'
 import {
   PlusIcon,
-  EllipsisIcon,
   RefreshCwIcon,
   Loader2,
   ChevronLeftIcon,
   ChevronRightIcon,
+  EditIcon,
 } from 'lucide-react'
 import Link from 'next/link'
 import { format } from 'date-fns'
@@ -24,12 +24,6 @@ import {
 } from '@/components/ui/table'
 import { DebouncedInput } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-} from '@/components/ui/dropdown-menu'
 import { Badge } from '@/components/ui/badge'
 import { cn } from '@/lib/utils'
 
@@ -102,18 +96,11 @@ export default function CustomerTable() {
                       {format(new Date(customer.last_contacted), 'MMMM do, yyyy')}
                     </TableCell>
                     <TableCell>
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="ghost">
-                            <EllipsisIcon className="cursor-pointer transition-all hover:bg-accent" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent>
-                          <Link href={`/customers/${customer.id}`}>
-                            <DropdownMenuItem className="cursor-pointer">Edit</DropdownMenuItem>
-                          </Link>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
+                      <Button variant="ghost" className="cursor-pointer">
+                        <Link href={`/customers/${customer.id}`}>
+                          <EditIcon>Edit</EditIcon>
+                        </Link>
+                      </Button>
                     </TableCell>
                   </TableRow>
                 ))

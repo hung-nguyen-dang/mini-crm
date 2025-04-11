@@ -2,6 +2,10 @@
   "name": "mini-crm",
   "version": "0.1.0",
   "private": true,
+  "engines" : {
+    "npm" : ">=10",
+    "node" : ">=20"
+  },
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
