@@ -27,7 +27,7 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { cn } from '@/lib/utils'
 
-const PAGE_SIZE = 5
+const PAGE_SIZE = 10
 
 export default function CustomerTable() {
   const [filter, setFilter] = useState<string>('')
@@ -110,25 +110,29 @@ export default function CustomerTable() {
           <TableFooter>
             <TableRow>
               <TableCell colSpan={5}>
-                <div className="flex gap-4 items-center">
-                  <Button
-                    variant="outline"
-                    onClick={() => setPage((prev) => prev - 1)}
-                    disabled={page <= 1}
-                  >
-                    <ChevronLeftIcon />
-                  </Button>
-                  <span>
-                    Page {page} of {totalPages}
-                  </span>
-                  <Button
-                    variant="outline"
-                    onClick={() => setPage((prev) => prev + 1)}
-                    disabled={page >= totalPages}
-                  >
-                    <ChevronRightIcon />
-                  </Button>
-                </div>
+                {totalPages === 0 ? (
+                  'No results'
+                ) : (
+                  <div className="flex gap-4 items-center">
+                    <Button
+                      variant="outline"
+                      onClick={() => setPage((prev) => prev - 1)}
+                      disabled={page <= 1}
+                    >
+                      <ChevronLeftIcon />
+                    </Button>
+                    <span>
+                      Page {page} of {totalPages}
+                    </span>
+                    <Button
+                      variant="outline"
+                      onClick={() => setPage((prev) => prev + 1)}
+                      disabled={page >= totalPages}
+                    >
+                      <ChevronRightIcon />
+                    </Button>
+                  </div>
+                )}
               </TableCell>
             </TableRow>
           </TableFooter>
